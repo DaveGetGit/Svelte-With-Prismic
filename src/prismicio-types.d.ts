@@ -4,7 +4,7 @@ import type * as prismic from '@prismicio/client';
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
-type PageDocumentDataSlicesSlice = RichTextSlice;
+type PageDocumentDataSlicesSlice = CardListSlice | HeroTextSlice | RichTextSlice;
 
 /**
  * Content for Page documents
@@ -30,8 +30,7 @@ interface PageDocumentData {
 	 * - **Tab**: Main
 	 * - **Documentation**: https://prismic.io/docs/field#slices
 	 */
-	slices: prismic.SliceZone<PageDocumentDataSlicesSlice>;
-	/**
+	slices: prismic.SliceZone<PageDocumentDataSlicesSlice> /**
 	 * Meta Title field in *Page*
 	 *
 	 * - **Field Type**: Text
@@ -39,7 +38,7 @@ interface PageDocumentData {
 	 * - **API ID Path**: page.meta_title
 	 * - **Tab**: SEO & Metadata
 	 * - **Documentation**: https://prismic.io/docs/field#key-text
-	 */
+	 */;
 	meta_title: prismic.KeyTextField;
 
 	/**
@@ -81,6 +80,85 @@ export type PageDocument<Lang extends string = string> = prismic.PrismicDocument
 >;
 
 export type AllDocumentTypes = PageDocument;
+
+/**
+ * Default variation for CardList Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CardListSliceDefault = prismic.SharedSliceVariation<
+	'default',
+	Record<string, never>,
+	never
+>;
+
+/**
+ * Slice variation for *CardList*
+ */
+type CardListSliceVariation = CardListSliceDefault;
+
+/**
+ * CardList Shared Slice
+ *
+ * - **API ID**: `card_list`
+ * - **Description**: CardList
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CardListSlice = prismic.SharedSlice<'card_list', CardListSliceVariation>;
+
+/**
+ * Primary content in *HeroText → Primary*
+ */
+export interface HeroTextSliceDefaultPrimary {
+	/**
+	 * Title field in *HeroText → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero_text.primary.title
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	title: prismic.RichTextField;
+
+	/**
+	 * Subtitle field in *HeroText → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: hero_text.primary.subtitle
+	 * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+	 */
+	subtitle: prismic.RichTextField;
+}
+
+/**
+ * Default variation for HeroText Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroTextSliceDefault = prismic.SharedSliceVariation<
+	'default',
+	Simplify<HeroTextSliceDefaultPrimary>,
+	never
+>;
+
+/**
+ * Slice variation for *HeroText*
+ */
+type HeroTextSliceVariation = HeroTextSliceDefault;
+
+/**
+ * HeroText Shared Slice
+ *
+ * - **API ID**: `hero_text`
+ * - **Description**: HeroText
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroTextSlice = prismic.SharedSlice<'hero_text', HeroTextSliceVariation>;
 
 /**
  * Primary content in *RichText → Primary*
@@ -138,6 +216,13 @@ declare module '@prismicio/client' {
 			PageDocumentData,
 			PageDocumentDataSlicesSlice,
 			AllDocumentTypes,
+			CardListSlice,
+			CardListSliceVariation,
+			CardListSliceDefault,
+			HeroTextSlice,
+			HeroTextSliceDefaultPrimary,
+			HeroTextSliceVariation,
+			HeroTextSliceDefault,
 			RichTextSlice,
 			RichTextSliceDefaultPrimary,
 			RichTextSliceVariation,

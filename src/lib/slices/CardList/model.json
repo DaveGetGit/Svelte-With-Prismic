@@ -1,0 +1,16 @@
+{
+	"id": "card_list",
+	"type": "SharedSlice",
+	"name": "CardList",
+	"description": "CardList",
+	"variations": [
+		{
+			"id": "default",
+			"name": "Default",
+			"docURL": "...",
+			"version": "initial",
+			"description": "Default",
+			"imageUrl": ""
+		}
+	]
+}
